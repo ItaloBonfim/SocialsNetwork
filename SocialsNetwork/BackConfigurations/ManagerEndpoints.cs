@@ -20,11 +20,11 @@ using SocialsNetwork.Endpoints.Streams.Subscribes;
 
 namespace SocialsNetwork.BackConfigurations
 {
-    public class EndpointFunctionalities
+    public class ManagerEndpoints
     {
         private WebApplication app;
 
-        public EndpointFunctionalities(WebApplication app)
+        public ManagerEndpoints(WebApplication app)
         {
             this.app = app;
         }
@@ -53,7 +53,7 @@ namespace SocialsNetwork.BackConfigurations
             app.MapMethods(FriendRequestGet.Template, FriendRequestGet.Methods, FriendRequestGet.Handle);
             app.MapMethods(FriendshipsGet.Template, FriendshipsGet.Methods, FriendshipsGet.Handle);
             app.MapMethods(FriendRequestPost.Template, FriendRequestPost.Methods, FriendRequestPost.Handle);
-            app.MapMethods(FriendRequestDelete.Template, FriendRequestDelete.Methods, FriendRequestDelete.Handle);
+            app.MapMethods(FriendRequestCancel.Template, FriendRequestCancel.Methods, FriendRequestCancel.Handle);
             app.MapMethods(FriendshipsDelete.Template, FriendshipsDelete.Methods, FriendshipsDelete.Handle);
             app.MapMethods(NewFriendFriendRequest.Template, NewFriendFriendRequest.Methods, NewFriendFriendRequest.Handle);
             app.MapMethods(ChannelBlocklistPost.Template, ChannelBlocklistPost.Methods, ChannelBlocklistPost.Handle);
