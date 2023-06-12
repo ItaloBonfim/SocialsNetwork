@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using SocialsNetwork.DTO.Class;
+﻿using SocialsNetwork.DTO.Class;
 using SocialsNetwork.Endpoints.DicionaryErrors;
 using SocialsNetwork.Infra.Data;
 using SocialsNetwork.Models.Class;
@@ -20,14 +19,14 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
            
             if (request.status.Equals(RequestStatus.accepted))
             {
-                // inserir novo registro na tabela friendships e apaga o registro da tabela FriendRequest
+                // inserir novo registro na tabela friendships
                 return await AddNewFriendship(LoggedUser, request, context);
-            } else if (request.status.Equals(RequestStatus.denied))
+            } else if (request.status.Equals(RequestStatus.denied)
+                        || request.status.Equals(RequestStatus.canceled))
             {
                 // apagar a solicitação de amizade de FriendRequest
-                return await RemoveFriendshipRequest(LoggedUser, request, context);   
+               return await RemoveFriendshipRequest(request.Id, context);   
             }
-
 
             return Results.Ok();
         }
@@ -47,7 +46,7 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
 
             /* Verifica se o usuario que recebeu a solicitação é o mesmo que o logado */
             if (!IsRequested(asked.Id, request.Asked))
-                return Results.Forbid();
+                return Results.BadRequest();
 
             /* Cria a instancia de uma nova amizade e realiza a validação usando os dados de usuario
              * obtidos anteriormente 
@@ -57,29 +56,21 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
                 return Results.ValidationProblem(data.Notifications.convertToDetails());
 
             await context.Friendships.AddAsync(data);
-            await RemoveFriendshipRequest(LoggedUser, request, context);
+            await RemoveFriendshipRequest(request.Id, context);
             await context.SaveChangesAsync();
+
             return Results.Created($"/Friend/{data.Id}", data.Id);
         }
 
-        private static async Task<IResult> RemoveFriendshipRequest(string LoggedUser, FriendInviteManager request, AppDbContext context)
+        private static async Task<IResult> RemoveFriendshipRequest(Guid IdRequest, AppDbContext context)
         {
-           
-            var asked = context.ApplicationUsers.FindAsync(LoggedUser).Result; 
-            var askFriendship = context.ApplicationUsers.FindAsync(request.AskFriendship).Result;
-            
-            if (asked == null || askFriendship == null)
-                return Results.NotFound("Usuario não identificado");
+            var remove = context.FriendRequests.FindAsync(IdRequest).Result;
 
-            var remove = context.FriendRequests.FindAsync(request.Id).Result;
-            if (remove == null) return Results.NotFound("Requisição não identificada");
-
-            if (remove.Asked == null || remove.Asked.Id != asked.Id) return Results.Forbid();
+            if (remove == null) 
+                return Results.NotFound();
 
             context.FriendRequests.Remove(remove);
-            /* Verifica se o status da requição é negado para casos onde o usuario negou a solicitação de amizade e salva */
-            if(request.status.Equals(RequestStatus.denied)) await context.SaveChangesAsync();
-
+            await context.SaveChangesAsync();
             return Results.Ok();
         }
         private static bool IsRequested(string Requested, string requestId) 

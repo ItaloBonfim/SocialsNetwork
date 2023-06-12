@@ -18,24 +18,20 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            if (request.Invited.Equals(LoggedUser)) return Results.BadRequest();
-
             var userRequester = Query.Execute(LoggedUser).Result;
             if (userRequester == null) return Results.BadRequest("Usuario solicitante não identificado...");
 
             var userInvited = Query.Execute(request.Invited).Result;
             if (userInvited == null) return Results.BadRequest("Usuario solicitado não identificado...");
 
-            
-
-            var blacklist = await (from BLS in context.BlockLists
+            var benedito = await (from BLS in context.BlockLists
                                   where
                                   ( BLS.User.Id == userRequester.Id && BLS.Blocked.Id == userInvited.Id )
                                   || ( BLS.Blocked.Id == userRequester.Id && BLS.User.Id == userInvited.Id )
                                   select new { Id = BLS.Id }
                                   ).FirstOrDefaultAsync();
 
-            if (blacklist != null) return Results.BadRequest("Existem retrições entre esses usuarios...");
+            if (benedito != null) return Results.BadRequest("Existem retrições entre esses usuarios...");
 
             var register = await (from FRS in context.FriendRequests
                                   where 
