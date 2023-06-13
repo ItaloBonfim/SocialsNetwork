@@ -14,17 +14,17 @@ namespace SocialsNetwork.Endpoints.Class.Follows
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
 
-        public static async Task<IResult> Action(FollowRequest request, HttpContext http, AppDbContext context, FindUserAndReturnAll query)
+        public static async Task<IResult> Action(doFollow request, HttpContext http, AppDbContext context, FindUserAndReturnAll query)
         {
 
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            if (LoggedUser.Equals(request.UserIdentity))
+            if (LoggedUser.Equals(request.UserId))
                 return Results.BadRequest();
 
 
             var user = query.Execute(LoggedUser).Result;
-            var followedUser = query.Execute(request.UserIdentity).Result;
+            var followedUser = query.Execute(request.UserId).Result;
             var registerData = await (from reg in context.Follows where reg.User.Id.Equals(user.Id) && reg.FollowedUser.Id.Equals(followedUser.Id) select new {Id = reg.Id}).FirstOrDefaultAsync();
             
             if(registerData != null) return Results.BadRequest("Já existe registro com esses usuarios...");
