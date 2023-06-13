@@ -5,13 +5,13 @@ namespace SocialsNetwork.Models.Class
 {
     public class Follow : Notifiable<Notification>
     {
-        public Follow() { }
 
         public Guid Id { get; set; }
         public ApplicationUser User { get; set; }
         public ApplicationUser FollowedUser { get; set; }
         public DateTime CreatedOn { get; set; }
 
+        public Follow() { }
         public Follow(ApplicationUser user, ApplicationUser followedUser)
         {
             var contract = new Contract<Follow>()

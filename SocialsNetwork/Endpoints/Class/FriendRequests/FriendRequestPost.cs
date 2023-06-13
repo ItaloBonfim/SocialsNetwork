@@ -29,7 +29,7 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
             }
 
 
-            return Results.Ok();
+            return Results.BadRequest("Nenhuma ação realzada!");
         }
 
         private static async Task<IResult> AddNewFriendship(string LoggedUser, FriendInviteManager request, AppDbContext context)
@@ -64,11 +64,9 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
 
         private static async Task<IResult> RemoveFriendshipRequest(string LoggedUser, FriendInviteManager request, AppDbContext context)
         {
-           
             var asked = context.ApplicationUsers.FindAsync(LoggedUser).Result; 
-            var askFriendship = context.ApplicationUsers.FindAsync(request.AskFriendship).Result;
             
-            if (asked == null || askFriendship == null)
+            if (asked == null)
                 return Results.NotFound("Usuario não identificado");
 
             var remove = context.FriendRequests.FindAsync(request.Id).Result;
@@ -77,7 +75,7 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
             if (remove.Asked == null || remove.Asked.Id != asked.Id) return Results.Forbid();
 
             context.FriendRequests.Remove(remove);
-            /* Verifica se o status da requição é negado para casos onde o usuario negou a solicitação de amizade e salva */
+            /* Verifica se o status da requisição é denied para casos onde o usuario negou a solicitação de amizade e salva */
             if(request.status.Equals(RequestStatus.denied)) await context.SaveChangesAsync();
 
             return Results.Ok();

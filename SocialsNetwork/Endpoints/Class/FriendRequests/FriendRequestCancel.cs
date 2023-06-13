@@ -16,7 +16,7 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var askFriendship = context.ApplicationUsers.FindAsync(LoggedUser).Result;
 
-            if(askFriendship == null) return Results.NotFound("Usuario não autorizado!");
+            if(askFriendship == null) return Results.NotFound("Usuario autenticado não identificado!");
 
             
             var remove = context.FriendRequests.FindAsync(invitationId).Result;

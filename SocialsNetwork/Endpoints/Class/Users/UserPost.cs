@@ -11,7 +11,7 @@ namespace SocialsNetwork.Endpoints.Class.Users
         public static string Template => "api/user";
         public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
-        public static IResult Action(UserRequest userRequest, UserManager<ApplicationUser> userManager)
+        public static IResult Action(NewUser userRequest, UserManager<ApplicationUser> userManager)
         {
             //var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
@@ -21,7 +21,7 @@ namespace SocialsNetwork.Endpoints.Class.Users
                  Email = userRequest.Email,
                  PhoneNumber = userRequest.PhoneNumber,
              }; */
-            var user = new ApplicationUser(userRequest.BirthDate, userRequest.genre)
+            var user = new ApplicationUser(userRequest.BirthDate, userRequest.Genre)
             {
                 UserName = userRequest.Email,
                // UserName = userRequest.Name,
