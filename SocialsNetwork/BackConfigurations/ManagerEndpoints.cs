@@ -20,11 +20,11 @@ using SocialsNetwork.Endpoints.Streams.Subscribes;
 
 namespace SocialsNetwork.BackConfigurations
 {
-    public class EndpointFunctionalities
+    public class ManagerEndpoints
     {
         private WebApplication app;
 
-        public EndpointFunctionalities(WebApplication app)
+        public ManagerEndpoints(WebApplication app)
         {
             this.app = app;
         }
