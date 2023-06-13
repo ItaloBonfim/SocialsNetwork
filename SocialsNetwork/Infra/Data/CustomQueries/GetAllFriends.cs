@@ -12,7 +12,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             this.configuration = configuration;
         }
 
-        public IEnumerable<Friends> Execute(string userLogged, int page, int rows)
+        public IEnumerable<FriendshipsResponse> Execute(string userLogged, int page, int rows)
         {
             var BaseConnection = new SqlConnection(configuration["ConnectionStrings:SqlServer"]);
             var query =
@@ -33,7 +33,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 ORDER BY FR.CreatedOn
                 OFFSET(@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
-            return BaseConnection.Query<Friends>(query, new {userLogged, page, rows});
+            return BaseConnection.Query<FriendshipsResponse>(query, new {userLogged, page, rows});
         }
     }
 }

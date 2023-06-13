@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 await app.Seed();
 
-var Endpoints = new ManagerEndpoints(app);
+var Endpoints = new EndpointFunctionalities(app);
 
 Endpoints.ConfigureClass(app);
 //Endpoints.ConfigureSocials(app);
