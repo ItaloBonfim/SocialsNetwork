@@ -13,14 +13,14 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             this.configuration = configuration;
         }
 
-        public IEnumerable<FriendsInviteResponse> Execute(string loggedUser, int? page, int? rows)
+        public IEnumerable<FriendsInviteReceived> Execute(string loggedUser, int? page, int? rows)
         {
             var BaseConnection = new SqlConnection(configuration["ConnectionStrings:SqlServer"]);
             var query = @"SELECT
                 FRS.Id AS 'FriendRequestId', 
-                FRS.AskFriendshipId AS 'Requester',
+                FRS.AskedId AS 'User',
                 FRS.Status AS 'RequestStatus',
-                ASPUSERS.Id AS 'RequesterId',
+                FRS.AskFriendshipId  AS 'ByUser',
                 ASPUSERS.Email 'RequesterEmail',
                 CLAIMS.ClaimValue AS 'Name',
                 ASPUSERS.AvatarURL AS 'RequestAvatarURL',
@@ -34,18 +34,18 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 ORDER BY FRS.CreatedOn
                 OFFSET(@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
-            return BaseConnection.Query<FriendsInviteResponse>(query, new { loggedUser, page, rows });
+            return BaseConnection.Query<FriendsInviteReceived>(query, new { loggedUser, page, rows });
 
         }
 
-        public IEnumerable<FriendsInviteResponse> InvitationsSent(string loggedUser, int? page, int? rows)
+        public IEnumerable<FriendsRequetsMade> InvitationsSent(string loggedUser, int? page, int? rows)
         {
             var BaseConnection = new SqlConnection(configuration["ConnectionStrings:SqlServer"]);
             var query = @"SELECT
                 FRS.Id AS 'FriendRequestId', 
-                FRS.AskFriendshipId AS 'Requester',
+                FRS.AskFriendshipId AS 'ByUser',
                 FRS.Status AS 'RequestStatus',
-                ASPUSERS.Id AS 'RequesterId',
+                FRS.AskedId AS 'ToUser',
                 ASPUSERS.Email 'RequesterEmail',
                 CLAIMS.ClaimValue AS 'Name',
                 ASPUSERS.AvatarURL AS 'RequestAvatarURL',
@@ -59,7 +59,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 ORDER BY FRS.CreatedOn
                 OFFSET(@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
-            return BaseConnection.Query<FriendsInviteResponse>(query, new { loggedUser, page, rows });
+            return BaseConnection.Query<FriendsRequetsMade>(query, new { loggedUser, page, rows });
         }
     }
 }

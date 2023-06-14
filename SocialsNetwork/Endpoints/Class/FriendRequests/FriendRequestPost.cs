@@ -16,7 +16,6 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
         public static async Task<IResult> Action(FriendInviteManager request, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if(LoggedUser == null) return Results.Forbid();
            
             if (request.status.Equals(RequestStatus.accepted))
             {

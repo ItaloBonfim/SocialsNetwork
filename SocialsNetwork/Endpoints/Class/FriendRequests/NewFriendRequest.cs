@@ -35,6 +35,15 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
 
             if (BlackList != null) return Results.BadRequest("Existem retrições entre esses usuarios...");
 
+            var Friendship = await (from FSP in context.Friendships
+                                    where
+                                    (FSP.AskFriendship.Id == userRequester.Id && FSP.Asked.Id == userInvited.Id)
+                                    || (FSP.Asked.Id == userRequester.Id && FSP.AskFriendship.Id == userInvited.Id)
+                                    select new { Id = FSP.Id }
+                                    ).FirstOrDefaultAsync();
+
+            if (Friendship != null) return Results.BadRequest("Já Existe uma amizade entre os usuarios...");
+
             var register = await (from FRS in context.FriendRequests
                                   where 
                                   ( FRS.AskFriendship.Id == userRequester.Id && FRS.Asked.Id == userInvited.Id )
