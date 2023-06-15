@@ -16,21 +16,21 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
         {
             var BaseConnection = new SqlConnection(configuration["ConnectionStrings:SqlServer"]);
             var query =
-                @"SELECT DISTINCT
-                FR.Id as FriendshipID,
-                aspUsers.Id as UserId,
-                FR.AskFriendshipId,
-                FR.AskedId,
-                aspClaim.ClaimValue as name,
-                aspUsers.Email as Email,
-                aspUsers.AvatarURL as avatarURL,
-                FR.CreatedOn as CreatedOn
-                FROM AspNetUsers as aspUsers
-                INNER JOIN AspNetUserClaims as aspClaim ON(aspUsers.Id = aspClaim.UserId AND aspClaim.ClaimType = 'name')
-                INNER JOIN Friendships as FR ON(aspUsers.Id = FR.AskFriendshipId OR aspUsers.Id = FR.AskedId)
+                @"SELECT
+                FSP.Id AS 'FriendshipId',
+                FSP.AskFriendshipId,
+                FSP.AskedId,
+                Claims.ClaimValue AS 'Name',
+                aspUsers.Email,
+                aspUsers.AvatarURL,
+                FSP.CreatedOn
+                FROM Friendships AS FSP
+                LEFT JOIN AspNetUsers AS aspUsers ON ( (FSP.AskFriendshipId = @userLogged AND FSP.AskedId = aspUsers.Id)
+                                                     OR (FSP.AskFriendshipId = aspUsers.Id AND FSP.AskedId = @userLogged ))
+                INNER JOIN AspNetUserClaims as Claims ON (aspUsers.Id = Claims.UserId)
                 WHERE
-                aspUsers.Id = @userLogged
-                ORDER BY FR.CreatedOn
+                Claims.ClaimType = 'Name'
+                ORDER BY FSP.CreatedOn
                 OFFSET(@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
             return BaseConnection.Query<Friends>(query, new {userLogged, page, rows});

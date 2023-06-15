@@ -2,7 +2,7 @@
 
 namespace SocialsNetwork.DTO.Class
 {
-    public record Friends (Guid FriendshipID, string UserId, string AskFriendshipId,
+    public record Friends (Guid FriendshipId, string AskFriendshipId,
                             string AskedId, string name, string email, string avatarURL, DateTime createdOn); //retornar todos os amigos
     public record FriendInvite(string Invited); // novas solicitações de amizade
     public record FriendInviteManager(Guid Id, string AskFriendship, string Asked, RequestStatus status); // gerenciar convites de amizade (aceitar, negar)
