@@ -17,7 +17,7 @@ namespace SocialsNetwork.Endpoints.Socials.Publications
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var user = await context.ApplicationUsers.FindAsync(LoggedUser);
             if (user == null)
-                return Results.NotFound("Usuario não identificado");
+                return Results.BadRequest("Usuario não identificado");
 
             var data = new Publication(user, request.TextValue, request.ImageURL, request.MidiaURL);
             if (!data.IsValid)

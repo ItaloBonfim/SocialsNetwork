@@ -32,7 +32,7 @@ await app.Seed();
 var Endpoints = new ManagerEndpoints(app);
 
 Endpoints.ConfigureClass(app);
-//Endpoints.ConfigureSocials(app);
+Endpoints.ConfigureSocials(app);
 //Endpoints.ConfigureStreams(app);
 //Endpoints.ConfigureDevelopment(app);
 Endpoints.ConfigureToken(app);

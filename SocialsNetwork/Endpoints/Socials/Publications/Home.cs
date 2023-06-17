@@ -3,25 +3,25 @@ using System.Security.Claims;
 
 namespace SocialsNetwork.Endpoints.Socials.Publications
 {
-    public class PublicationGet
+    public class Home
     {
-        public static string Template => "api/publications/{user:Guid?}/{page:int?}/{rows:int?}";
+
+        public static string Template => "api/home/{page:int?}/{rows:int?}";
         public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
         public static Delegate Handle => Action;
 
-        public static IResult Action(HttpContext http, FindPublicationsWithClaims Query, string? user,int page = 1, int rows = 24)
+        public static IResult Action(HttpContext http, FindPublicationsWithClaims Query, int page = 1, int rows = 24)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             if (LoggedUser == null)
-
                 return Results.Forbid();
 
-            var data = Query.PerfilPublications(LoggedUser, page, rows);
+            var data = Query.Execute(LoggedUser, page, rows);
             if (data == null)
                 //há outras regras a aplicar
-                return Results.Forbid();
+                return Results.NotFound("Não encontrado publicações");
 
-            return Results.Ok(data);
+            return Results.Ok();
         }
     }
 }

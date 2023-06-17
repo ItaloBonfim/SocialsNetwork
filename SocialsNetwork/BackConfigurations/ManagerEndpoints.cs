@@ -70,6 +70,7 @@ namespace SocialsNetwork.BackConfigurations
             app.MapMethods(CommentReactionPut.Template, CommentReactionPut.Methods, CommentReactionPut.Handle);
             app.MapMethods(CommentReactionDelete.Template, CommentReactionDelete.Methods, CommentReactionDelete.Handle);
             app.MapMethods(PublicationGet.Template, PublicationGet.Methods, PublicationGet.Handle);
+            app.MapMethods(Home.Template, Home.Methods, Home.Handle);
             app.MapMethods(PublicationPost.Template, PublicationPost.Methods, PublicationPost.Handle);
             app.MapMethods(PublicationPut.Template, PublicationPut.Methods, PublicationPut.Handle);
             app.MapMethods(PublicationDelete.Template, PublicationDelete.Methods, PublicationDelete.Handle);

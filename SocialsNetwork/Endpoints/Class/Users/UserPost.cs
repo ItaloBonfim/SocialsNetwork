@@ -13,21 +13,12 @@ namespace SocialsNetwork.Endpoints.Class.Users
         public static Delegate Handle => Action;
         public static IResult Action(NewUser userRequest, UserManager<ApplicationUser> userManager)
         {
-            //var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            /* var user = new IdentityUser
-             {
-                 UserName = userRequest.Email,
-                 Email = userRequest.Email,
-                 PhoneNumber = userRequest.PhoneNumber,
-             }; */
             var user = new ApplicationUser(userRequest.BirthDate, userRequest.Genre)
             {
                 UserName = userRequest.Email,
-               // UserName = userRequest.Name,
                 Email = userRequest.Email,
                 PhoneNumber = userRequest.PhoneNumber,
-
             };
 
             var result = userManager.CreateAsync(user, userRequest.Password).Result;
@@ -37,10 +28,8 @@ namespace SocialsNetwork.Endpoints.Class.Users
 
             var userClaims = new List<Claim>
             {
-                //new Claim(ClaimTypes.Email, userRequest.Name),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim("Name", userRequest.Name)
-                
+                new Claim("Name", userRequest.Name)    
             };
             var claimResult =
                  userManager.AddClaimsAsync(user, userClaims).Result;
