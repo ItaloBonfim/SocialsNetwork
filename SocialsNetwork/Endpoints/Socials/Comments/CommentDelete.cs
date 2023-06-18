@@ -13,9 +13,6 @@ namespace SocialsNetwork.Endpoints.Socials.Comments
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            if (LoggedUser == null)
-                return Results.Forbid();
-
             var data = context.Comments.FirstOrDefault(
                 x => x.Id == pCommendId && x.User.Id == LoggedUser);
             if (data == null)

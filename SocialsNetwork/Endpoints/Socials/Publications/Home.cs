@@ -19,9 +19,9 @@ namespace SocialsNetwork.Endpoints.Socials.Publications
             var data = Query.Execute(LoggedUser, page, rows);
             if (data == null)
                 //há outras regras a aplicar
-                return Results.NotFound("Não encontrado publicações");
+                return Results.NotFound("Não encontrado publicações"); 
 
-            return Results.Ok();
+            return Results.Ok(data);
         }
     }
 }

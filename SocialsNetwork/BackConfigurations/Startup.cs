@@ -81,12 +81,12 @@ public class Startup
     {
         services.AddAuthorization(options =>
         {   
-            /* Para Habilitar o Swagger novamente esse bloco de codigo deve estar habilitado -- //
+            // Para Habilitar o Swagger novamente esse bloco de codigo deve estar habilitado -- //
              options.FallbackPolicy = new AuthorizationPolicyBuilder()
              .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
              .RequireAuthenticatedUser()
              .Build();
-            // -- Para Habilitar o Swagger novamente esse bloco de codigo deve estar habilitado -- */
+            // -- Para Habilitar o Swagger novamente esse bloco de codigo deve estar habilitado -- //
 
             options.AddPolicy("AdminPolice", p =>
             p.RequireAuthenticatedUser().RequireClaim("AdminLevel"));

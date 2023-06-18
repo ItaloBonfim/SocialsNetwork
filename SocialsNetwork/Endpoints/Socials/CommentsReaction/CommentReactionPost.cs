@@ -15,8 +15,6 @@ namespace SocialsNetwork.Endpoints.Socials.CommentsReaction
         public static async Task<IResult> Action([FromBody] CommentReactionRequest request,HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
             
             var user = await context.ApplicationUsers.FindAsync(LoggedUser); // usuario
             if (user == null)

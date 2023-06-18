@@ -27,17 +27,15 @@ namespace SocialsNetwork.Models.Socials
             Text = text;
             ImageURL = imageURL;
             MidiaURL = midiaURL;
-
+            CreatedOn = DateTime.Now;
             DataValidate();
         }
 
         public void DataValidate()
         {
             var contract = new Contract<Publication>()
-             .IsNotNull(User, "User")
-             .IsNotNull(Text, "Text")
-             .IsNotNull(ImageURL, "ImageURL")
-             .IsNotNull(MidiaURL, "MidiaURL");
+             .IsNotNull(User, "User");
+             
             AddNotifications(contract);
         }
 

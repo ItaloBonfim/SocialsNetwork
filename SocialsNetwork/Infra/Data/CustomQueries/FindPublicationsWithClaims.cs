@@ -16,7 +16,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
         {
             var data = new SqlConnection(Configuration["ConnectionStrings:SqlServer"]);
             var query = @"
-                SELECT DISTINCT
+                SELECT
                 aspUsers.Id AS 'User',
                 aspClaim.ClaimValue AS 'Name',
                 aspUsers.AvatarURL AS 'AvatarURL',
@@ -29,9 +29,9 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 FROM Publication AS PUB
                 INNER JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = PUB.UserId)
                 INNER JOIN AspNetUserClaims AS aspClaim ON (aspUsers.Id = aspClaim.UserId AND aspClaim.ClaimType = 'Name')
-                INNER JOIN Friendships AS FRR ON (aspUsers.Id = FRR.AskFriendshipId OR aspUsers.Id = FRR.AskedId)
-                WHERE
-                aspUsers.Id = @LoggedUser 
+                INNER JOIN Friendships AS FSP ON ( (FSP.AskFriendshipId = @LoggedUser AND FSP.AskedId = aspUsers.Id)
+                                                     OR (FSP.AskFriendshipId = aspUsers.Id AND FSP.AskedId = @LoggedUser ))
+                
                 ORDER BY PUB.CreatedOn DESC
                 OFFSET(@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 

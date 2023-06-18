@@ -16,7 +16,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
         {
             var BaseConnection = new SqlConnection(configuration["ConnectionStrings:SqlServer"]);
             var query =
-                @"SELECT
+                @"SELECT Distinct
                 FSP.Id AS 'FriendshipId',
                 FSP.AskFriendshipId,
                 FSP.AskedId,

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SocialsNetwork.DTO.Socials;
 using SocialsNetwork.Infra.Data;
 using SocialsNetwork.Models.Socials;
@@ -15,11 +16,10 @@ namespace SocialsNetwork.Endpoints.Socials.Comments
         public async static Task<IResult> Action([FromBody]CommentRequest request, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
+
             var user = await context.ApplicationUsers.FindAsync(LoggedUser);
             //var pub = await context.Publication.FindAsync(request.PublicationId);
-            var pub = context.Publication.FirstOrDefault(
+            var pub = await context.Publication.FirstOrDefaultAsync(
                         x => x.Id == request.PublicationId);
 
             if (user == null || pub == null)

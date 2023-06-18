@@ -5,7 +5,7 @@
         public string User { get; set; }
         public string Name { get; set; }
         public string AvatarURL { get; set; }
-        public string Publication { get; set; }
+        public Guid Publication { get; set; }
         public string Content { get; set; }
         public string ImageURL { get; set; }
         public string MidiaURL { get; set; }

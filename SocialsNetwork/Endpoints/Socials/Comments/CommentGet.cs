@@ -14,8 +14,6 @@ namespace SocialsNetwork.Endpoints.Socials.Comments
         public static IResult Action([FromRoute]string publicationId, int page, int rows,HttpContext http, FindPublicationComments Query)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
 
             var data = Query.Execute(publicationId, page, rows);
             if(data == null)
