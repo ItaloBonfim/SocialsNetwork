@@ -13,8 +13,7 @@ namespace SocialsNetwork.Endpoints.Socials.CommentsReaction
         public static async Task<IResult> Action([FromRoute] Guid commentReactId, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
+
 
             var data = context.CommentReactions.FirstOrDefault
                 (x => x.Id == commentReactId && x.UserId == LoggedUser);

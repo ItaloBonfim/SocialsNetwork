@@ -13,9 +13,7 @@ namespace SocialsNetwork.Endpoints.Socials.Subcomment
         public static async Task<IResult> Action([FromRoute] Guid sCommenteId, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
-
+          
            var data = context.SubComments.FirstOrDefault(
                x => x.Id == sCommenteId && x.UserId == LoggedUser);
 

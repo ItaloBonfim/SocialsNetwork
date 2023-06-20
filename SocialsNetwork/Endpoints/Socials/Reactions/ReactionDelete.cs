@@ -13,8 +13,6 @@ namespace SocialsNetwork.Endpoints.Socials.Reactions
         public static async Task<IResult> Action([FromRoute] Guid reactionId, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
 
             var data = context.Reaction.FirstOrDefault(
                 x => x.Id == reactionId && x.UserId == LoggedUser);

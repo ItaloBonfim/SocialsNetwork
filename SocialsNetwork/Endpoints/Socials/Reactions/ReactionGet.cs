@@ -14,9 +14,7 @@ namespace SocialsNetwork.Endpoints.Socials.Reactions
         public static IResult Action([FromRoute] string publicationId, int page, int rows, HttpContext http, FindPublicationReaction Query)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
-
+            
             var data = Query.Execute(publicationId, page, rows);
             if (data == null)
                 return Results.NoContent();

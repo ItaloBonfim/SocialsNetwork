@@ -16,7 +16,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
         {
             var data = new SqlConnection(Configuration["ConnectionStrings:SqlServer"]);
             var query = @"
-                SELECT
+                SELECT DISTINCT
                 aspUsers.Id AS 'User',
                 aspClaim.ClaimValue AS 'Name',
                 aspUsers.AvatarURL AS 'AvatarURL',
@@ -26,14 +26,20 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 PUB.MidiaURL AS 'MidiaURL',
                 PUB.CreatedOn AS 'CreatedOn',
                 PUB.UpdatedOn AS 'UpdateOn'
+
                 FROM Publication AS PUB
-                INNER JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = PUB.UserId)
-                INNER JOIN AspNetUserClaims AS aspClaim ON (aspUsers.Id = aspClaim.UserId AND aspClaim.ClaimType = 'Name')
-                INNER JOIN Friendships AS FSP ON ( (FSP.AskFriendshipId = @LoggedUser AND FSP.AskedId = aspUsers.Id)
-                                                     OR (FSP.AskFriendshipId = aspUsers.Id AND FSP.AskedId = @LoggedUser ))
-                
-                ORDER BY PUB.CreatedOn DESC
-                OFFSET(@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
+                    LEFT JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = PUB.UserId)
+                        INNER JOIN AspNetUserClaims AS aspClaim ON (aspUsers.Id = aspClaim.UserId AND aspClaim.ClaimType = 'Name' )
+                            INNER JOIN Friendships AS FSP ON ( FSP.AskFriendshipId = aspUsers.Id OR FSP.AskedId = aspUsers.Id )
+                                LEFT JOIN Follows AS FLL ON ( aspUsers.Id = FLL.FollowedUserId )
+
+                WHERE
+ 
+                 PUB.UserId = @LoggedUser
+                 OR FSP.AskFriendshipId = @LoggedUser OR FSP.AskedId = @LoggedUser
+                 OR FLL.UserId = @LoggedUser
+                 ORDER BY PUB.CreatedOn DESC
+                 OFFSET(@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
 
          
 

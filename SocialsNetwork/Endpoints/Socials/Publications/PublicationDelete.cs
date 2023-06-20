@@ -14,8 +14,6 @@ namespace SocialsNetwork.Endpoints.Socials.Publications
         public static async Task<IResult> Action([FromRoute] Guid publicationId, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
 
             var data = await context.Publication.FirstOrDefaultAsync(
                 x => x.Id == publicationId && x.UserId == LoggedUser);

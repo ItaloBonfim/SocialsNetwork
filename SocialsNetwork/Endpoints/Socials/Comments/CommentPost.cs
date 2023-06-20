@@ -18,6 +18,7 @@ namespace SocialsNetwork.Endpoints.Socials.Comments
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
             var user = await context.ApplicationUsers.FindAsync(LoggedUser);
+            if (user == null) return Results.BadRequest();
             //var pub = await context.Publication.FindAsync(request.PublicationId);
             var pub = await context.Publication.FirstOrDefaultAsync(
                         x => x.Id == request.PublicationId);

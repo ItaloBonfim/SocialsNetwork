@@ -12,9 +12,6 @@ namespace SocialsNetwork.Endpoints.Socials.Publications
         public static IResult Action(HttpContext http, FindPublicationsWithClaims Query, string? user,int page = 1, int rows = 24)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-
-                return Results.Forbid();
 
             var data = Query.PerfilPublications(LoggedUser, page, rows);
             if (data == null)
