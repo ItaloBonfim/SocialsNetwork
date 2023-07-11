@@ -25,7 +25,7 @@ namespace SocialsNetwork.Endpoints.Class.Follows
 
             var user = query.Execute(LoggedUser).Result;
             var followedUser = query.Execute(request.UserId).Result;
-            var registerData = await (from reg in context.Follows where reg.User.Id.Equals(user.Id) && reg.FollowedUser.Id.Equals(followedUser.Id) select new {Id = reg.Id}).FirstOrDefaultAsync();
+            var registerData = await (from reg in context.Follows where reg.User.Id.Equals(user.Id) && reg.FollowedUser.Id.Equals(followedUser.Id) select new {reg.Id}).FirstOrDefaultAsync();
             
             if(registerData != null) return Results.BadRequest("Já existe registro com esses usuarios...");
 

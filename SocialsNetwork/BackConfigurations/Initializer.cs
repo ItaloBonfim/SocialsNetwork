@@ -11,13 +11,11 @@ namespace SocialsNetwork.BackConfigurations
 {//https://www.youtube.com/watch?v=0B7QjRSvcGI
     public static class Initializer
     {
-        public static async Task<WebApplication> Seed(this WebApplication app)
+        public static async Task<WebApplication> SeedUsuarios(this WebApplication app)
         {
-
-
+            #region PUPULA A BASE COM USUARIOS PRONTOS PARA TESTES
             using (var scope = app.Services.CreateScope())
             {
-                using var context =  scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 using var userManager =  scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 try
                 {
@@ -48,27 +46,45 @@ namespace SocialsNetwork.BackConfigurations
                             
                         }
                     }
-
-                    var typesReactions = await context.TypeReactions.FirstOrDefaultAsync();
-                    if(typesReactions == null)
-                    {
-                        foreach(var item in typesReactionsList()) 
-                        {
-                            await context.TypeReactions.AddAsync(item);
-                        
-                        }
-
-                       await context.SaveChangesAsync();
-                    } 
-
                 } catch (Exception) {
                     throw;
                 }
 
                 return app;
             }
+            #endregion
+        }
+        public static async Task<WebApplication> SeedTiposReacoes(this WebApplication App)
+        {
+            #region POPULA A BASE COM DADOS PRÉ CADASTRADOS PARA TIPOS DE REAÇÕES
+
+            using (var scope = App.Services.CreateScope())
+            {
+                using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+                try
+                {
+                    var register = await context.TypeReactions.FirstOrDefaultAsync();
+
+                    if (register == null)
+                    {
+                        foreach(var item in typesReactionsList())
+                        {
+                            await context.TypeReactions.AddAsync(item);
+                        }
+                        await context.SaveChangesAsync();
+                    }
+
+                } catch (Exception)
+                {
+                    throw;
+                }
+                return App;
+            }
+            #endregion
         }
 
+        #region LISTAS DE INCLUSÃO DE DADOS SEED
         private static IList<TypeReaction> typesReactionsList()
         {
             IList<TypeReaction> typeReactions = new List<TypeReaction>()
@@ -90,7 +106,7 @@ namespace SocialsNetwork.BackConfigurations
             var emailProvider = "@socialplayers.com";
             IList<UserRequest> dataList = new List<UserRequest>()
             {
-                new UserRequest() {Email = "annos-voldigoad"+emailProvider, Password = "395029037465", Name = "Annos Voldigold", BirthDate = DateTime.Parse("1005-02-15"), Genre = Genre.Male, PhoneNumber = ""  },
+                new UserRequest() {Email = "annos-voldigoad"+emailProvider, Password = "395029037465", Name = "Annos Voldigoad", BirthDate = DateTime.Parse("1005-02-15"), Genre = Genre.Male, PhoneNumber = ""  },
                 new UserRequest() {Email = "stella-vermillion"+emailProvider, Password = "395029037465", Name = "Stella Vermillion", BirthDate = DateTime.Parse("2003-04-20"), Genre = Genre.Female, PhoneNumber = ""  },
                 new UserRequest() {Email = "asta"+emailProvider, Password = "395029037465", Name = "Asta", BirthDate = DateTime.Parse("2006-12-31"), Genre = Genre.Male, PhoneNumber = ""  },
                 new UserRequest() {Email = "ikki_kurogane"+emailProvider, Password = "395029037465", Name = "Ikki Kurogane", BirthDate = DateTime.Parse("2003-07-27"), Genre = Genre.Male, PhoneNumber = ""  },
@@ -101,7 +117,7 @@ namespace SocialsNetwork.BackConfigurations
                 new UserRequest() {Email = "misha_necron"+emailProvider, Password = "395029037465", Name = "Misha Necron", BirthDate = DateTime.Parse("2006-11-16"), Genre = Genre.Female, PhoneNumber = ""  },
                 new UserRequest() {Email = "sasha_necron"+emailProvider, Password = "395029037465", Name = "Sasha Necron", BirthDate = DateTime.Parse("2006-05-09"), Genre = Genre.Female, PhoneNumber = ""  },
                 new UserRequest() {Email = "shadow"+emailProvider, Password = "395029037465", Name = "Cid Kageno", BirthDate = DateTime.Parse("1990-09-11"), Genre = Genre.Male, PhoneNumber = ""  },
-                new UserRequest() {Email = "alpa"+emailProvider, Password = "395029037465", Name = "Alpa", BirthDate = DateTime.Parse("1998-01-24"), Genre = Genre.Female, PhoneNumber = ""  },
+                new UserRequest() {Email = "alpha"+emailProvider, Password = "395029037465", Name = "Alpha", BirthDate = DateTime.Parse("1998-01-24"), Genre = Genre.Female, PhoneNumber = ""  },
                 new UserRequest() {Email = "beta"+emailProvider, Password = "395029037465", Name = "Beta", BirthDate = DateTime.Parse("1999-01-18"), Genre = Genre.Female, PhoneNumber = ""  },
                 new UserRequest() {Email = "aurora"+emailProvider, Password = "478040699448", Name = "Aurora", BirthDate = DateTime.Parse("2000-02-20"), Genre = Genre.Female, PhoneNumber = ""  },
                 new UserRequest() {Email = "rimuru-tempest"+emailProvider, Password = "478040699448", Name = "Rimuru Tempest", BirthDate = DateTime.Parse("1985-06-07"), Genre = Genre.Undefinided, PhoneNumber = ""  },
@@ -119,13 +135,16 @@ namespace SocialsNetwork.BackConfigurations
                 new UserRequest() {Email = "roronoa-zoro"+emailProvider, Password = "535528869511", Name = "Roronoa Zoro", BirthDate = DateTime.Parse("1996-07-22"), Genre = Genre.Male, PhoneNumber = ""  },
                 new UserRequest() {Email = "julisalexia"+emailProvider, Password = "535528869511", Name = "Julis Alexia", BirthDate = DateTime.Parse("2004-08-04"), Genre = Genre.Female, PhoneNumber = ""  },
                 new UserRequest() {Email = "amagiriayato"+emailProvider, Password = "535528869511", Name = "Amagiri Ayato", BirthDate = DateTime.Parse("2003-09-10"), Genre = Genre.Male, PhoneNumber = ""  },
+                new UserRequest() {Email = "chun-li"+emailProvider, Password = "k8xKkPy57#%j", Name = "Chun-Li", BirthDate = DateTime.Parse("1968-03-01"), Genre = Genre.Female, PhoneNumber = ""  },
+                new UserRequest() {Email = "ryu"+emailProvider, Password = "k8xKkPy57#%j", Name = "Ryu", BirthDate = DateTime.Parse("1964-07-21"), Genre = Genre.Male, PhoneNumber = ""  },
+                new UserRequest() {Email = "cammy"+emailProvider, Password = "k8xKkPy57#%j", Name = "Cammy White", BirthDate = DateTime.Parse("1974-01-06"), Genre = Genre.Female, PhoneNumber = ""  },
+                new UserRequest() {Email = "kenmasters"+emailProvider, Password = "k8xKkPy57#%j", Name = "Ken Masters", BirthDate = DateTime.Parse("1965-02-14"), Genre = Genre.Male, PhoneNumber = ""  },
+
             };
             return dataList;
         }
 
-
-
-
+        #endregion
 
     }
 }

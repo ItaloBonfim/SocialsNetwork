@@ -12,7 +12,7 @@ using SocialsNetwork.Infra.Data;
 namespace SocialsNetwork.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230603023638_Initial")]
+    [Migration("20230702180924_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -352,7 +352,6 @@ namespace SocialsNetwork.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CommentValue")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
@@ -398,15 +397,15 @@ namespace SocialsNetwork.Migrations
                     b.Property<int>("ReactTypeFK")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("SubCommentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("subCommentId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -415,9 +414,9 @@ namespace SocialsNetwork.Migrations
                     b.HasIndex("ReactTypeFK")
                         .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SubCommentId");
 
-                    b.HasIndex("subCommentId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("CommentReactions");
                 });
@@ -436,9 +435,6 @@ namespace SocialsNetwork.Migrations
 
                     b.Property<string>("MidiaURL")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SocialPurble")
-                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -508,15 +504,12 @@ namespace SocialsNetwork.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MidiaUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedOn")
@@ -917,23 +910,23 @@ namespace SocialsNetwork.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SocialsNetwork.Models.Socials.SubComment", "SubComment")
+                        .WithMany()
+                        .HasForeignKey("SubCommentId");
+
                     b.HasOne("SocialsNetwork.Models.Class.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SocialsNetwork.Models.Socials.SubComment", "subComment")
-                        .WithMany()
-                        .HasForeignKey("subCommentId");
-
                     b.Navigation("Comment");
 
                     b.Navigation("ReactType");
 
-                    b.Navigation("User");
+                    b.Navigation("SubComment");
 
-                    b.Navigation("subComment");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SocialsNetwork.Models.Socials.Publication", b =>
@@ -977,7 +970,7 @@ namespace SocialsNetwork.Migrations
             modelBuilder.Entity("SocialsNetwork.Models.Socials.SubComment", b =>
                 {
                     b.HasOne("SocialsNetwork.Models.Socials.Comment", "Comment")
-                        .WithMany("subComments")
+                        .WithMany("SubComments")
                         .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
@@ -1097,7 +1090,7 @@ namespace SocialsNetwork.Migrations
                 {
                     b.Navigation("CommentsReactions");
 
-                    b.Navigation("subComments");
+                    b.Navigation("SubComments");
                 });
 
             modelBuilder.Entity("SocialsNetwork.Models.Socials.Publication", b =>

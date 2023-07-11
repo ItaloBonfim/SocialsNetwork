@@ -27,7 +27,8 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-await app.Seed();
+await app.SeedUsuarios();
+await app.SeedTiposReacoes();
 
 var Endpoints = new ManagerEndpoints(app);
 

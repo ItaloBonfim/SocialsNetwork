@@ -9,7 +9,7 @@ namespace SocialsNetwork.Models.Socials
         public CommentReaction() { }
         public Guid Id { get; set; }
         public Comment Comment { get; set; }
-        public SubComment? subComment { get; set; }
+        public SubComment? SubComment { get; set; }
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
         public int ReactTypeFK { get; set; }
@@ -28,7 +28,7 @@ namespace SocialsNetwork.Models.Socials
 
             Id = Guid.NewGuid();
             Comment = comment;
-            this.subComment = subComment;
+            this.SubComment = subComment;
             User = user;
             ReactType = react;
             CreatedOn = DateTime.Now;

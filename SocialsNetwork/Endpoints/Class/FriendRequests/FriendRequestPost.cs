@@ -16,7 +16,8 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
         public static async Task<IResult> Action(FriendInviteManager request, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-           
+            if (request.Asked.Equals(request.AskFriendship)) return Results.BadRequest();
+
             if (request.status.Equals(RequestStatus.accepted))
             {
                 // inserir novo registro na tabela friendships e apaga o registro da tabela FriendRequest
@@ -37,7 +38,8 @@ namespace SocialsNetwork.Endpoints.Class.FriendRequests
             var asked = context.ApplicationUsers.FindAsync(LoggedUser).Result;
             var askFriendship = context.ApplicationUsers.FindAsync(request.AskFriendship).Result;
             if (asked == null || askFriendship == null) 
-                return Results.NotFound("Usuario não identificado"); 
+                return Results.NotFound("Usuario não identificado");
+
             
             /* Verifica o registro e retorna a solicitação */
             var register = context.FriendRequests.FindAsync(request.Id).Result;

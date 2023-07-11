@@ -324,8 +324,7 @@ namespace SocialsNetwork.Migrations
                     ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MidiaURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    SocialPurble = table.Column<int>(type: "int", nullable: false)
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -377,7 +376,7 @@ namespace SocialsNetwork.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PublicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CommentValue = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CommentValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MidiaURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -519,9 +518,9 @@ namespace SocialsNetwork.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MidiaUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MidiaUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -547,7 +546,7 @@ namespace SocialsNetwork.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    subCommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SubCommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ReactTypeFK = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -568,8 +567,8 @@ namespace SocialsNetwork.Migrations
                         principalTable: "Comments",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CommentReactions_SubComments_subCommentId",
-                        column: x => x.subCommentId,
+                        name: "FK_CommentReactions_SubComments_SubCommentId",
+                        column: x => x.SubCommentId,
                         principalTable: "SubComments",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -661,9 +660,9 @@ namespace SocialsNetwork.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommentReactions_subCommentId",
+                name: "IX_CommentReactions_SubCommentId",
                 table: "CommentReactions",
-                column: "subCommentId");
+                column: "SubCommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommentReactions_UserId",

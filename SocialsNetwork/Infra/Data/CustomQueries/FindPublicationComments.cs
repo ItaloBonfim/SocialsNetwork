@@ -12,7 +12,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             this.Configuration = configuration;
         }
 
-        public IEnumerable<CommentResponse> Execute(string publicationId, int page, int rows)
+        public IEnumerable<CommentsResponse> Execute(string publicationId, int page, int rows)
         {
           
             var data = new SqlConnection(Configuration["ConnectionStrings:SqlServer"]);
@@ -35,7 +35,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             CMM.PublicationId = @publicationId
             ORDER BY CMM.CreatedOn DESC
             OFFSET(@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
-            return data.Query<CommentResponse>(query, new { publicationId , page, rows });
+            return data.Query<CommentsResponse>(query, new { publicationId , page, rows });
         }
     }
 }

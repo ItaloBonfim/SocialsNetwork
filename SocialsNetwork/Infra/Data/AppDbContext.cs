@@ -105,9 +105,9 @@ namespace SocialsNetwork.Infra.Data
                 .WithMany(e => e.PublicationComments)
                 .OnDelete(DeleteBehavior.ClientCascade);
 
-            builder.Entity<SubComment>()
-                .HasOne(e => e.Comment)
-                .WithMany(e => e.subComments)
+            builder.Entity<Comment>()
+                .HasMany(e => e.SubComments)
+                .WithOne(e => e.Comment)
                 .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.Entity<Reaction>()
@@ -118,10 +118,6 @@ namespace SocialsNetwork.Infra.Data
             builder.Entity<ChannelCategories>()
                 .HasOne(e => e.IdChannel)
                 .WithMany(e => e.ChannelCategories);
-
-            /* builder.Entity<StreamingCategories>()
-                 .HasOne(e => e.channelCategories)
-                 .WithMany(e => e.IdCategories);  */
 
             builder.Entity<ChannelCategories>()
                 .HasOne(x => x.Streaming)
@@ -142,12 +138,6 @@ namespace SocialsNetwork.Infra.Data
                 .WithMany(e => e.Subscribes)
                 .OnDelete(DeleteBehavior.ClientCascade);
             
-
-
-
-
-
-
         }
     }
 }

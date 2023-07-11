@@ -8,12 +8,12 @@ namespace SocialsNetwork.Models.Socials
     {
         public SubComment() { }
         public Guid Id { get; set; }
-        public Comment Comment { get; set; }
+        public Comment Comment { get; set; } // tem um comentario principal
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-        public string Text { get; set; }
-        public string ImageUrl { get; set; }
-        public string MidiaUrl { get; set; }
+        public string? Text { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? MidiaUrl { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }
 
@@ -21,12 +21,10 @@ namespace SocialsNetwork.Models.Socials
         {
             var contract = new Contract<SubComment>()
                 .IsNotNull(comment, "Comment")
-                .IsNotNull(user, "User")
-                .IsNotNull(text, "Text")
-                .IsNotNull(imageUrl, "ImageURL")
-                .IsNotNull(midiaUrl, "MidiaURL");
+                .IsNotNull(user, "User");
             AddNotifications(contract);
 
+            Id = new Guid();
             Comment = comment;
             User = user;
             Text = text;

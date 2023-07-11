@@ -62,8 +62,8 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 PUB.CreatedOn AS 'CreatedOn',
                 PUB.UpdatedOn AS 'UpdateOn'
                 FROM Publication AS PUB
-                INNER JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = PUB.UserId)
-                INNER JOIN AspNetUserClaims AS aspClaim ON (aspUsers.Id = aspClaim.UserId AND aspClaim.ClaimType = 'Name')
+                    INNER JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = PUB.UserId)
+                    INNER JOIN AspNetUserClaims AS aspClaim ON (aspUsers.Id = aspClaim.UserId AND aspClaim.ClaimType = 'Name')
                 WHERE
                 aspUsers.Id = @LoggedUser 
                 ORDER BY PUB.CreatedOn DESC

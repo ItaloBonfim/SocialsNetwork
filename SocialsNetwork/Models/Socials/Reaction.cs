@@ -10,10 +10,8 @@ namespace SocialsNetwork.Models.Socials
         public Guid Id { get; set; }
         public Publication Publication { get; set; }
         public int UserExpression { get; set; }
-
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-
         public int TypeReactionFK { get; set; }
         public TypeReaction TypeReact { get; set; }
         public DateTime CreatedOn { get; set; }

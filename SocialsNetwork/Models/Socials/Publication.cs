@@ -17,7 +17,6 @@ namespace SocialsNetwork.Models.Socials
         public string? MidiaURL { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
-        public EnableProperty SocialPurble { get; set; }      
         public List<Comment> PublicationComments { get; set; }
         public List<Reaction> Reactions { get; set; }
 
@@ -45,7 +44,6 @@ namespace SocialsNetwork.Models.Socials
             ImageURL = imageURL;
             MidiaURL = midiaURL;
             UpdatedOn = DateTime.Now;
-            SocialPurble = status;
             DataValidate();
         }
     }

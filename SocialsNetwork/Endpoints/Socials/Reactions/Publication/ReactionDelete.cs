@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SocialsNetwork.Infra.Data;
 using System.Security.Claims;
 
-namespace SocialsNetwork.Endpoints.Socials.Reactions
+namespace SocialsNetwork.Endpoints.Socials.Reactions.Publication
 {
     public class ReactionDelete
     {
@@ -14,7 +15,7 @@ namespace SocialsNetwork.Endpoints.Socials.Reactions
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            var data = context.Reaction.FirstOrDefault(
+            var data = await context.Reaction.FirstOrDefaultAsync(
                 x => x.Id == reactionId && x.UserId == LoggedUser);
 
             if (data == null)

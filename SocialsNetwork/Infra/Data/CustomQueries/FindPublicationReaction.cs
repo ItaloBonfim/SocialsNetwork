@@ -12,7 +12,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             this.Configuration = configuration;
         }
 
-        public IEnumerable<PublicationReactionsResponse> Execute(string publicationId, int page, int rows)
+        public IEnumerable<ReactionPublicationResponse> Execute(string publicationId, int page, int rows)
         {
 
             var data = new SqlConnection(Configuration["ConnectionStrings:SqlServer"]);
@@ -34,7 +34,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             Pub.Id = @publicationId
             ORDER BY RCT.CreatedOn
             OFFSET(@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
-            return data.Query<PublicationReactionsResponse>(query, new { publicationId, page, rows });
+            return data.Query<ReactionPublicationResponse>(query, new { publicationId, page, rows });
         }
     }
 }

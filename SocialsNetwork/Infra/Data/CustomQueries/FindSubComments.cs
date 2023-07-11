@@ -12,7 +12,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             this.Configuration = configuration;
         }
 
-        public IEnumerable<SubcommentResponse> Execute(string pCommentId, int page, int rows)
+        public IEnumerable<ReactionResponseSubComment> Execute(string pCommentId, int page, int rows)
         {
 
             var data = new SqlConnection(Configuration["ConnectionStrings:SqlServer"]);
@@ -41,7 +41,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 CMM.Id = @pCommentId
                 ORDER BY SUBC.CreatedOn DESC
                 OFFSET(@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
-            return data.Query<SubcommentResponse>(query, new { pCommentId, page, rows });
+            return data.Query<ReactionResponseSubComment>(query, new { pCommentId, page, rows });
         }
     }
 }

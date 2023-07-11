@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SocialsNetwork.DTO.Socials;
 using SocialsNetwork.Infra.Data;
+using SocialsNetwork.Infra.Data.CustomQueries;
 using SocialsNetwork.Models.Socials;
 using System.Security.Claims;
 
@@ -9,30 +12,39 @@ namespace SocialsNetwork.Endpoints.Socials.Subcomment
     public class SubcommentPost
     {
         public static string Template => "api/sub/comments/new";
-        public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
+        public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
         public static Delegate Handle => Action;
-
-        public async static Task<IResult> Action([FromBody] SubcommentRequest request, HttpContext http, AppDbContext context)
+        public async static Task<IResult> Action([FromBody] newSubcomment request, HttpContext http, AppDbContext context, FindUserAndReturnAll query)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            var user = await context.ApplicationUsers.FindAsync(LoggedUser);
-            if (user == null) return Results.BadRequest();
+            var user = query.Execute(LoggedUser).Result;
+            if (user == null) return Results.NotFound();
 
-            var cmm = context.Comments.FirstOrDefault(
-                x => x.Id == request.pCommentId);
-            
-            if (user == null || cmm == null)
-                return Results.NotFound("Dados necessario não identificados");
+            //var primary = await (from X in context.Comments
+            //                     where
+            //                     X.Id.Equals(request.CommentId)
+            //                     select new
+            //                     {
+            //                         Id = X.Id,
+            //                         UserId = X.UserId,
+            //                         CommentValue = X.CommentValue,
+            //                         ImageURL = X.ImageURL,
+            //                         MidiaURL = X.MidiaURL,
+            //                         CreatedOn = X.CreatedOn,
+            //                         UpdatedOn = X.UpdatedOn
+            //                     }).FirstOrDefaultAsync();
+            //if(primary == null) return Results.NotFound();
+            var primary = await context.Comments.SingleAsync(x => x.Id.Equals(request.CommentId));
+            if (primary == null) return Results.NotFound();
 
-            var data = new SubComment(cmm, user, request.CommentValue, request.ImageURL, request.MidiaURL);
-            if (!data.IsValid)
-                return Results.BadRequest("Falha na validação");
+            var secondary = new SubComment(primary, user, request.Comment, request.ImageURL, request.MidiaURL);
+            if(!secondary.IsValid) return Results.BadRequest();
 
-            await context.SubComments.AddAsync(data);
+            await context.SubComments.AddAsync(secondary);
             await context.SaveChangesAsync();
 
-            return Results.Ok(data);
+            return Results.Created($"/sub/comments/{secondary.Id}", secondary.Id);
         }
     }
 }

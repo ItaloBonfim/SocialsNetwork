@@ -20,4 +20,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Business\Class\Usuarios\" />
+    <Folder Include="Business\Class\Seguidores\" />
+    <Folder Include="Business\Socials\" />
+    <Folder Include="Data\FluentLib\" />
+    <Folder Include="Data\Socials\" />
+    <Folder Include="Interfaces\Socials\" />
+  </ItemGroup>
+
 </Project>
