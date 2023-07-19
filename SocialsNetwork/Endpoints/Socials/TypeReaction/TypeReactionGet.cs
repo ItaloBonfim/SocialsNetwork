@@ -14,13 +14,13 @@ namespace SocialsNetwork.Endpoints.Socials.TypeReaction
             if (LoggedUser == null)
                 return Results.Forbid();
 
-            var data = (from aReactions in context.TypeReactions
+            var lista = (from aReactions in context.TypeReactions
                         orderby aReactions.Description
                         select aReactions).ToList();
-            if (data == null)
+            if (lista == null)
                 return Results.NoContent();
 
-            return Results.Ok(data);
+            return Results.Ok(lista);
         }
     }
 }

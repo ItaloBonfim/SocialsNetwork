@@ -32,5 +32,6 @@ namespace SocialsNetwork.Models.Socials
             TypeReact = typeReact;
             CreatedOn = DateTime.Now;
         }
+
     }
 }

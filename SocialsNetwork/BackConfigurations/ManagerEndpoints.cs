@@ -9,7 +9,9 @@ using SocialsNetwork.Endpoints.Socials.Comentarios;
 using SocialsNetwork.Endpoints.Socials.Comments;
 using SocialsNetwork.Endpoints.Socials.CommentsReaction;
 using SocialsNetwork.Endpoints.Socials.Publications;
+using SocialsNetwork.Endpoints.Socials.Reactions.Comments;
 using SocialsNetwork.Endpoints.Socials.Reactions.Publication;
+using SocialsNetwork.Endpoints.Socials.Reactions.Subcomment;
 using SocialsNetwork.Endpoints.Socials.Subcomment;
 using SocialsNetwork.Endpoints.Socials.TypeReaction;
 using SocialsNetwork.Endpoints.Streams.ChannelBlocks;
@@ -66,21 +68,36 @@ namespace SocialsNetwork.BackConfigurations
             app.MapMethods(CommentPost.Template, CommentPost.Methods, CommentPost.Handle);
             app.MapMethods(CommentDelete.Template, CommentDelete.Methods, CommentDelete.Handle);
             app.MapMethods(ComentariosRespostas.Template, ComentariosRespostas.Methods, ComentariosRespostas.Handle);
+            
             app.MapMethods(CommentReactionGet.Template, CommentReactionGet.Methods, CommentReactionGet.Handle);
             app.MapMethods(CommentReactionPost.Template, CommentReactionPost.Methods, CommentReactionPost.Handle);
             app.MapMethods(CommentReactionPut.Template, CommentReactionPut.Methods, CommentReactionPut.Handle);
             app.MapMethods(CommentReactionDelete.Template, CommentReactionDelete.Methods, CommentReactionDelete.Handle);
+           
             app.MapMethods(PublicationGet.Template, PublicationGet.Methods, PublicationGet.Handle);
+           
             app.MapMethods(Home.Template, Home.Methods, Home.Handle);
             app.MapMethods(PublicationPost.Template, PublicationPost.Methods, PublicationPost.Handle);
             app.MapMethods(PublicationPut.Template, PublicationPut.Methods, PublicationPut.Handle);
             app.MapMethods(PublicationDelete.Template, PublicationDelete.Methods, PublicationDelete.Handle);
-            app.MapMethods(ReactionGet.Template, ReactionGet.Methods, ReactionGet.Handle);
-            app.MapMethods(ReactionPost.Template, ReactionPost.Methods, ReactionPost.Handle);
-            app.MapMethods(ReactionDelete.Template, ReactionDelete.Methods, ReactionDelete.Handle);
+           
+            app.MapMethods(Endpoints.Socials.Reactions.Comments.ReactionGet.Template, Endpoints.Socials.Reactions.Comments.ReactionGet.Methods, Endpoints.Socials.Reactions.Comments.ReactionGet.Handle);
+            app.MapMethods(Endpoints.Socials.Reactions.Comments.ReactionPost.Template, Endpoints.Socials.Reactions.Comments.ReactionPost.Methods, Endpoints.Socials.Reactions.Comments.ReactionPost.Handle);
+            app.MapMethods(Endpoints.Socials.Reactions.Comments.ReactionDelete.Template, Endpoints.Socials.Reactions.Comments.ReactionDelete.Methods, Endpoints.Socials.Reactions.Comments.ReactionDelete.Handle);
+
+            app.MapMethods(Endpoints.Socials.Reactions.Publication.ReactionGet.Template, Endpoints.Socials.Reactions.Publication.ReactionGet.Methods, Endpoints.Socials.Reactions.Publication.ReactionGet.Handle);
+            app.MapMethods(Endpoints.Socials.Reactions.Publication.ReactionPost.Template, Endpoints.Socials.Reactions.Publication.ReactionPost.Methods, Endpoints.Socials.Reactions.Publication.ReactionPost.Handle);
+            app.MapMethods(Endpoints.Socials.Reactions.Publication.ReactionDelete.Template, Endpoints.Socials.Reactions.Publication.ReactionDelete.Methods, Endpoints.Socials.Reactions.Publication.ReactionDelete.Handle);
+
+            app.MapMethods(Endpoints.Socials.Reactions.Subcomment.ReactionGet.Template, Endpoints.Socials.Reactions.Subcomment.ReactionGet.Methods, Endpoints.Socials.Reactions.Subcomment.ReactionGet.Handle);
+            app.MapMethods(Endpoints.Socials.Reactions.Subcomment.ReactionPost.Template, Endpoints.Socials.Reactions.Subcomment.ReactionPost.Methods, Endpoints.Socials.Reactions.Subcomment.ReactionPost.Handle);
+            app.MapMethods(Endpoints.Socials.Reactions.Subcomment.ReactionDelete.Template, Endpoints.Socials.Reactions.Subcomment.ReactionDelete.Methods, Endpoints.Socials.Reactions.Subcomment.ReactionDelete.Handle);
+
+
             app.MapMethods(SubcommentGet.Template, SubcommentGet.Methods, SubcommentGet.Handle);
             app.MapMethods(SubcommentPost.Template, SubcommentPost.Methods, SubcommentPost.Handle);
             app.MapMethods(SubcommentPut.Template, SubcommentPut.Methods, SubcommentPut.Handle);
+
             app.MapMethods(TypeReactionGet.Template, TypeReactionGet.Methods, TypeReactionGet.Handle);
         }
 

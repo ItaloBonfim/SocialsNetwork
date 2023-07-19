@@ -32,7 +32,11 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 SUBC.ImageUrl AS 'sImangeURL',
                 SUBC.MidiaUrl AS 'sMidiaURL',
                 SUBC.CreatedOn AS 'sCreatedOn',
-                SUBC.UpdatedOn AS 'sUpdateOn'
+                SUBC.UpdatedOn AS 'sUpdateOn',
+                
+               (SELECT COUNT(Id) FROM CommentReactions AS CR
+                    WHERE CR.SubCommentId = SUBC.Id) AS 'QtdReactions'
+
                 FROM SubComments AS SUBC
                 INNER JOIN Comments AS CMM ON (CMM.Id = SUBC.CommentId)
                 INNER JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = SUBC.UserId)

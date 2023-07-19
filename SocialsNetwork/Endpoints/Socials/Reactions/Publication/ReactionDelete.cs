@@ -7,10 +7,9 @@ namespace SocialsNetwork.Endpoints.Socials.Reactions.Publication
 {
     public class ReactionDelete
     {
-        public static string Template => "api/reaction/delete/{reactionId:Guid}";
-        public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
+        public static string Template => "api/reaction/publication/delete/{reactionId:Guid}";
+        public static string[] Methods => new string[] { HttpMethod.Delete.ToString() };
         public static Delegate Handle => Action;
-
         public static async Task<IResult> Action([FromRoute] Guid reactionId, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;

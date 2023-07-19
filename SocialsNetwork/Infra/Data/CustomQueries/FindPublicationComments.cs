@@ -27,7 +27,14 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             CMM.ImageURL as 'ImageURL',
             CMM.MidiaURL 'MidiaURL',
             CMM.PublicationId as 'Publication',
-            CMM.UpdatedOn
+            CMM.UpdatedOn,
+            
+            (SELECT COUNT(Id) FROM SubComments AS SUB
+                WHERE SUB.CommentId = CMM.Id) AS 'QtdAnswers',
+
+            (SELECT COUNT(Id) FROM CommentReactions AS CR
+                WHERE CR.CommentId = CMM.Id) AS 'QtdReactions' 
+
             FROM Comments AS CMM
             INNER JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = CMM.UserId)
             INNER JOIN AspNetUserClaims AS aspClaims ON (aspUsers.Id = aspClaims.UserId AND aspClaims.ClaimType = 'name')

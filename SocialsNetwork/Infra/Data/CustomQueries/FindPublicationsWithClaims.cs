@@ -60,7 +60,16 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 PUB.ImageURL AS 'ImageURL' ,
                 PUB.MidiaURL AS 'MidiaURL',
                 PUB.CreatedOn AS 'CreatedOn',
-                PUB.UpdatedOn AS 'UpdateOn'
+                PUB.UpdatedOn AS 'UpdateOn',
+
+                (SELECT COUNT(Id)
+                    FROM Comments AS C
+                    WHERE C.PublicationId = PUB.Id ) AS 'QtdComments',
+
+                (SELECT COUNT(Id)
+                    FROM Reaction AS RE
+                    WHERE RE.PublicationId = PUB.Id ) AS 'QtdReactions'
+
                 FROM Publication AS PUB
                     INNER JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = PUB.UserId)
                     INNER JOIN AspNetUserClaims AS aspClaim ON (aspUsers.Id = aspClaim.UserId AND aspClaim.ClaimType = 'Name')

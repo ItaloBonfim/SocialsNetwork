@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SocialsNetwork.Infra.Data;
 using SocialsNetwork.Infra.Data.CustomQueries;
 using System.Security.Claims;
@@ -7,20 +8,29 @@ namespace SocialsNetwork.Endpoints.Socials.Reactions.Publication
 {
     public class ReactionGet
     {
-        public static string Template => "api/Reaction/{publicationId}";
+        public static string Template => "api/reaction/publication/{publicationId:guid}";
         public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
         public static Delegate Handle => Action;
 
-        public static IResult Action([FromRoute] string publicationId, int page, int rows, HttpContext http, FindPublicationReaction Query)
+        public async static Task<IResult> Action([FromRoute] Guid publicationId, HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            var data = Query.Execute(publicationId, page, rows);
-            if (data == null)
-                return Results.NoContent();
+            var Lista = await (from RPUB in context.Publication
+                               where
+                               RPUB.Id == publicationId
+                               select new
+                               {
+                                   RPUB,
+                                   RPUB.User
 
+                               }).Take(24).OrderByDescending(X => X.RPUB.CreatedOn)
+                               .ToListAsync();
+                              
+            if (!Lista.Any())
+                return Results.NotFound("Não foi encotnrado quaisquer reações sobre essa publicação");
 
-            return Results.Ok(data);
+            return Results.Ok(Lista);
         }
     }
 }
