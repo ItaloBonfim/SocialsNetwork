@@ -77,16 +77,32 @@ public class Startup
         services.AddScoped<FindAllStreamCategories>();
         services.AddScoped<FindChannelSubscribes>();
     }
+    public void ConfigureCors(IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: "AllowOrigin", policy =>
+            {
+                //policy.AllowAnyOrigin();
+                //policy.AllowAnyHeader();
+                //policy.AllowAnyMethod();
+                policy.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+                
+            });
+        });
+    }
     public void ConfigureAuthorization(IServiceCollection services)
     {
         services.AddAuthorization(options =>
         {   
-            /* Para Habilitar o Swagger novamente esse bloco de codigo deve estar desabilitado -- //
+            // -- Para Habilitar o Swagger novamente esse bloco de codigo deve estar desabilitado -- //
              options.FallbackPolicy = new AuthorizationPolicyBuilder()
              .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
              .RequireAuthenticatedUser()
              .Build();
-            // -- Para Habilitar o Swagger novamente esse bloco de codigo deve estar desabilitado -- */
+            // -- Para Habilitar o Swagger novamente esse bloco de codigo deve estar desabilitado -- //
 
             options.AddPolicy("AdminPolice", p =>
             p.RequireAuthenticatedUser().RequireClaim("AdminLevel"));

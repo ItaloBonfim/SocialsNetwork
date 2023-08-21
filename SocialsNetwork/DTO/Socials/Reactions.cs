@@ -8,5 +8,6 @@ namespace SocialsNetwork.DTO.Socials
     public record NewReactionSubComment(Guid Comment, string User, int reaction);
     public record ReactionResponseComment(Guid Id, string Comment, string type, Guid User, string Publcation, string AvatarURL, string Name);
     public record ReactionResponseSubComment(Guid Id, string Comment, string type, Guid User, string Publcation, string AvatarURL, string Name, int QtdReactions);
-
+    public record TypesReactions (int Id, string Description);
+        
 }

@@ -1,4 +1,5 @@
-﻿using SocialsNetwork.Infra.Data;
+﻿using SocialsNetwork.DTO.Socials;
+using SocialsNetwork.Infra.Data;
 using System.Security.Claims;
 
 namespace SocialsNetwork.Endpoints.Socials.TypeReaction
@@ -11,16 +12,23 @@ namespace SocialsNetwork.Endpoints.Socials.TypeReaction
         public static IResult Action(HttpContext http, AppDbContext context)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (LoggedUser == null)
-                return Results.Forbid();
 
             var lista = (from aReactions in context.TypeReactions
-                        orderby aReactions.Description
-                        select aReactions).ToList();
+                         orderby aReactions.Description
+                         select aReactions).OrderBy(aReactions => aReactions.Id).ToList();
+            
             if (lista == null)
                 return Results.NoContent();
 
-            return Results.Ok(lista);
+            // OrderByDescending(X => X.RASW.CreatedOn)
+            List<TypesReactions> Types = new List<TypesReactions>();
+
+            foreach(var item in lista)
+            {
+                Types.Add(new TypesReactions(item.Id, item.Description));                    
+            }
+
+            return Results.Ok(Types);
         }
     }
 }

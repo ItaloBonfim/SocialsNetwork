@@ -12,7 +12,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 this.Configuration = configuration;
         }
 
-        public IEnumerable<PublicationResponse> Execute(string LoggedUser,int page, int rows)
+        public IEnumerable<HomePublications> Execute(string LoggedUser,int page, int rows)
         {
             var data = new SqlConnection(Configuration["ConnectionStrings:SqlServer"]);
             var query = @"
@@ -25,7 +25,12 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 PUB.ImageURL AS 'ImageURL' ,
                 PUB.MidiaURL AS 'MidiaURL',
                 PUB.CreatedOn AS 'CreatedOn',
-                PUB.UpdatedOn AS 'UpdateOn'
+                PUB.UpdatedOn AS 'UpdateOn',
+
+                (SELECT COUNT(ID) FROM 
+                                Comments AS COM WHERE COM.PublicationId = PUB.ID  ) AS 'QtdComments',
+                (SELECT COUNT(ID) FROM 
+                                Reaction AS REA WHERE REA.PublicationId = PUB.ID) AS 'QtdReactions'
 
                 FROM Publication AS PUB
                     LEFT JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = PUB.UserId)
@@ -43,7 +48,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
 
          
 
-            return data.Query<PublicationResponse>(query, new { LoggedUser, page, rows });
+            return data.Query<HomePublications>(query, new { LoggedUser, page, rows });
         }
 
 
@@ -61,6 +66,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 PUB.MidiaURL AS 'MidiaURL',
                 PUB.CreatedOn AS 'CreatedOn',
                 PUB.UpdatedOn AS 'UpdateOn',
+
 
                 (SELECT COUNT(Id)
                     FROM Comments AS C

@@ -9,12 +9,13 @@ startup.ConfigureServices(builder.Services);
 startup.ConfigureDatabaseConnection(builder.Services, "Dev");
 startup.ConfigureIdentityFramework(builder.Services);
 startup.ConfigureCustomQueries(builder.Services);
+startup.ConfigureCors(builder.Services);
 startup.ConfigureAuthentication(builder.Services);
 startup.ConfigureAuthorization(builder.Services);
 
 
 var app = builder.Build();
-
+app.UseCors("AllowOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 

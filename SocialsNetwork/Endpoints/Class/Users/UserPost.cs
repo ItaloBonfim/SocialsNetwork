@@ -14,6 +14,7 @@ namespace SocialsNetwork.Endpoints.Class.Users
         public static IResult Action(NewUser userRequest, UserManager<ApplicationUser> userManager)
         {
 
+
             var user = new ApplicationUser(userRequest.BirthDate, userRequest.Genre)
             {
                 UserName = userRequest.Email,
@@ -29,7 +30,9 @@ namespace SocialsNetwork.Endpoints.Class.Users
             var userClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim("Name", userRequest.Name)    
+                new Claim("Name", userRequest.Name),
+                new Claim("Username", "@"+userRequest.Username)
+                
             };
             var claimResult =
                  userManager.AddClaimsAsync(user, userClaims).Result;
