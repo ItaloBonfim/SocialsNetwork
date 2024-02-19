@@ -83,10 +83,11 @@ public class Startup
         {
             options.AddPolicy(name: "AllowOrigin", policy =>
             {
-                //policy.AllowAnyOrigin();
+
                 //policy.AllowAnyHeader();
                 //policy.AllowAnyMethod();
                 policy.WithOrigins("http://localhost:4200")
+                .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
                 
@@ -97,12 +98,12 @@ public class Startup
     {
         services.AddAuthorization(options =>
         {   
-            // -- Para Habilitar o Swagger novamente esse bloco de codigo deve estar desabilitado -- //
+            /* - Para Habilitar o Swagger novamente esse bloco de codigo deve estar desabilitado -- //
              options.FallbackPolicy = new AuthorizationPolicyBuilder()
              .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
              .RequireAuthenticatedUser()
              .Build();
-            // -- Para Habilitar o Swagger novamente esse bloco de codigo deve estar desabilitado -- //
+            // -- Para Habilitar o Swagger novamente esse bloco de codigo deve estar desabilitado -- */
 
             options.AddPolicy("AdminPolice", p =>
             p.RequireAuthenticatedUser().RequireClaim("AdminLevel"));

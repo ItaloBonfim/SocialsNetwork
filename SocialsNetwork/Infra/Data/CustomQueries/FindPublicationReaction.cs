@@ -12,29 +12,35 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             this.Configuration = configuration;
         }
 
-        public IEnumerable<ReactionPublicationResponse> Execute(string publicationId, int page, int rows)
+        public IEnumerable<ReactionPublicationResponse> Execute(Guid PublicationId, int page, int rows)
         {
 
             var data = new SqlConnection(Configuration["ConnectionStrings:SqlServer"]);
             var query = @"
-            SELECT
-            RCT.Id,
-            TRS.Id AS 'ReactionId',
-            TRS.Description AS 'Description',
-            RCT.PublicationId AS 'Publication',
-            aspUsers.Id AS 'User',
-            aspUsers.AvatarURL AS 'AvatarURL',
-            aspClaim.ClaimValue AS 'Name'
-            FROM Reaction AS RCT
-            INNER JOIN Publication AS Pub ON (Pub.Id = RCT.PublicationId)
-            INNER JOIN TypeReactions AS TRS ON (RCT.TypeReactionFK = TRS.Id)
-            INNER JOIN AspNetUsers AS aspUsers ON (aspUsers.Id = RCT.UserId)
-            INNER JOIN AspNetUserClaims AS aspClaim ON (aspUsers.Id = aspClaim.userId AND aspClaim.ClaimType = 'Name')
+            SELECT 
+            USERS.ClaimValue AS 'rUserName',
+            RUSER.ID AS 'rUserId',
+            PREC.PublicationId,
+            PUB.UserId AS 'UserPublisherId',
+            PUB.CreatedOn,
+            (SELECT ClaimValue FROM AspNetUserClaims WHERE AspNetUserClaims.UserId = PUB.UserId AND AspNetUserClaims.ClaimType = 'Name') AS 'UserPublisherName',
+            PREC.Id,
+            PREC.TypeReactionFK,
+            PREC.UserExpression
+
+
+            FROM 
+            Reaction AS PREC
+            INNER JOIN Publication AS PUB ON (PUB.Id = PREC.PublicationId)
+            INNER JOIN AspNetUserClaims AS USERS ON (USERS.UserId = PREC.UserId)
+            INNER JOIN TypeReactions AS TR ON (PREC.TypeReactionFK = TR.Id)
+            INNER JOIN AspNetUsers AS RUSER ON (RUSER.Id = PREC.UserId)
             WHERE
-            Pub.Id = @publicationId
-            ORDER BY RCT.CreatedOn
+            PUB.Id = @PublicationId
+            AND USERS.ClaimType = 'Name'
+            ORDER BY PUB.CreatedOn DESC
             OFFSET(@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
-            return data.Query<ReactionPublicationResponse>(query, new { publicationId, page, rows });
+            return data.Query<ReactionPublicationResponse>(query, new { PublicationId, page, rows });
         }
     }
 }

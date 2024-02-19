@@ -19,8 +19,8 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             var query = @"
             SELECT 
             aspUsers.Id AS 'User',
-            aspUsers.Email,
             aspUsers.AvatarURL,
+            aspClaims.ClaimValue AS name,
             CMM.Id as 'Comment',
             CMM.CreatedOn,
             CMM.CommentValue as 'Text',
@@ -40,6 +40,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
             INNER JOIN AspNetUserClaims AS aspClaims ON (aspUsers.Id = aspClaims.UserId AND aspClaims.ClaimType = 'name')
             WHERE
             CMM.PublicationId = @publicationId
+            AND aspClaims.ClaimType = 'name'
             ORDER BY CMM.CreatedOn DESC
             OFFSET(@page -1) * @rows ROWS FETCH NEXT @rows ROWS ONLY";
             return data.Query<CommentsResponse>(query, new { publicationId , page, rows });

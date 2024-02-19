@@ -1,4 +1,5 @@
-﻿using SocialsNetwork.Infra.Data.CustomQueries;
+﻿using SocialsNetwork.DTO.Class;
+using SocialsNetwork.Infra.Data.CustomQueries;
 using System.Security.Claims;
 
 namespace SocialsNetwork.Endpoints.Class.Follows
@@ -9,12 +10,14 @@ namespace SocialsNetwork.Endpoints.Class.Follows
         public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
         public static Delegate Handle => Action;
 
-        public static IResult Action(HttpContext http, GetAllFollowsUsers query, string? userId, int page = 1, int rows = 24)
+        public static IResult Action(HttpContext http, GetAllFollowsUsers query,
+                                    string? userId, int page = 1, int rows = 24)
         {
             var LoggedUser = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             
             if (userId != null)
             {
+              
                 return Results.Ok(query.ExecuteFollowers(userId, page, rows));
             }
 

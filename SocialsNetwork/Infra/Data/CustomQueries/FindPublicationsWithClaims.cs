@@ -12,7 +12,7 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 this.Configuration = configuration;
         }
 
-        public IEnumerable<HomePublications> Execute(string LoggedUser,int page, int rows)
+        public IEnumerable<HomePublications> Execute(string LoggedUser, int page, int rows)
         {
             var data = new SqlConnection(Configuration["ConnectionStrings:SqlServer"]);
             var query = @"

@@ -9,9 +9,12 @@ using SocialsNetwork.Endpoints.Socials.Comentarios;
 using SocialsNetwork.Endpoints.Socials.Comments;
 using SocialsNetwork.Endpoints.Socials.CommentsReaction;
 using SocialsNetwork.Endpoints.Socials.Publications;
+
 using SocialsNetwork.Endpoints.Socials.Reactions.Comments;
 using SocialsNetwork.Endpoints.Socials.Reactions.Publication;
 using SocialsNetwork.Endpoints.Socials.Reactions.Subcomment;
+
+
 using SocialsNetwork.Endpoints.Socials.Subcomment;
 using SocialsNetwork.Endpoints.Socials.TypeReaction;
 using SocialsNetwork.Endpoints.Streams.ChannelBlocks;
@@ -43,6 +46,7 @@ namespace SocialsNetwork.BackConfigurations
         public void ConfigureClass(WebApplication app)
         {
             app.MapMethods(UserGet.Template, UserGet.Methods, UserGet.Handle);
+            app.MapMethods(UserGetAll.Template, UserGetAll.Methods, UserGetAll.Handle);
             app.MapMethods(UserPost.Template, UserPost.Methods, UserPost.Handle);
             app.MapMethods(UserPut.Template, UserPut.Methods, UserPut.Handle);
             app.MapMethods(BlocklistGet.Template, BlocklistGet.Methods, BlocklistGet.Handle);
@@ -60,6 +64,8 @@ namespace SocialsNetwork.BackConfigurations
             app.MapMethods(FriendshipsDelete.Template, FriendshipsDelete.Methods, FriendshipsDelete.Handle);
             app.MapMethods(NewFriendFriendRequest.Template, NewFriendFriendRequest.Methods, NewFriendFriendRequest.Handle);
             app.MapMethods(ChannelBlocklistPost.Template, ChannelBlocklistPost.Methods, ChannelBlocklistPost.Handle);
+
+            app.MapMethods(SearchFilterFollows.Template, SearchFilterFollows.Methods, SearchFilterFollows.Handle);
         }
 
         public void ConfigureSocials(WebApplication app)
@@ -73,6 +79,8 @@ namespace SocialsNetwork.BackConfigurations
             app.MapMethods(CommentReactionPost.Template, CommentReactionPost.Methods, CommentReactionPost.Handle);
             app.MapMethods(CommentReactionPut.Template, CommentReactionPut.Methods, CommentReactionPut.Handle);
             app.MapMethods(CommentReactionDelete.Template, CommentReactionDelete.Methods, CommentReactionDelete.Handle);
+
+            
            
             app.MapMethods(PublicationGet.Template, PublicationGet.Methods, PublicationGet.Handle);
            

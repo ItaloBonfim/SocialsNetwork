@@ -18,15 +18,17 @@ namespace SocialsNetwork.Endpoints.Security
         {
             var user = manager.FindByEmailAsync(login.Email).Result;
             if (user == null)
-                Results.BadRequest();
+               return Results.Ok("0211 - Email não encontrado");
+
             if (!manager.CheckPasswordAsync(user, login.Password).Result)
-                Results.BadRequest();
+               return  Results.Ok("0212 - Senha incorreta para o email informado");
 
             var claims = manager.GetClaimsAsync(user).Result;
             var Subject = new ClaimsIdentity(new Claim[]
                 {
                      new Claim(ClaimTypes.Email, login.Email),
-                     new Claim(ClaimTypes.NameIdentifier, user.Id)
+                     new Claim(ClaimTypes.NameIdentifier, user.Id),
+                     // new Claim("Username", user.UserName) vale p teste
                 });
             Subject.AddClaims(claims);
 

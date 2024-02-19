@@ -23,7 +23,8 @@ namespace SocialsNetwork.Infra.Data.CustomQueries
                 Claims.ClaimValue AS 'Name',
                 aspUsers.Email,
                 aspUsers.AvatarURL,
-                FSP.CreatedOn
+                FSP.CreatedOn,
+                aspUsers.BirthDate AS 'dataAniversario'
                 FROM Friendships AS FSP
                 LEFT JOIN AspNetUsers AS aspUsers ON ( (FSP.AskFriendshipId = @userLogged AND FSP.AskedId = aspUsers.Id)
                                                      OR (FSP.AskFriendshipId = aspUsers.Id AND FSP.AskedId = @userLogged ))
